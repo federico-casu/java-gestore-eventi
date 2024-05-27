@@ -63,7 +63,7 @@ public class Event implements Comparable<Event> {
                 ", totalSeats=" + totalSeats +
                 ", reservedSeats=" + reservedSeats +
                 ", availableSeats=" + (totalSeats - reservedSeats) +
-                '}';
+                '}' + '\n';
     }
 
     // GETTER - SETTER

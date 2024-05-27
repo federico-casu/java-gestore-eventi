@@ -45,7 +45,7 @@ public class Concert extends Event{
                 ", availableSeats=" + (getTotalSeats() - getReservedSeats()) +
                 ", time=" + time +
                 ", price=" + price + " $" +
-                '}';
+                '}' + '\n';
     }
 
     // GETTER - SETTER

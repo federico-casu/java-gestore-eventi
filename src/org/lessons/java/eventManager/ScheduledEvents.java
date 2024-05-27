@@ -55,9 +55,9 @@ public class ScheduledEvents {
 
     @Override
     public String toString() {
-        return "ScheduledEvents{" +
-                "title='" + title + '\'' +
-                ", events=" + events +
+        return "ScheduledEvents{" + '\n' +
+                "title='" + title + '\'' + ", " + '\n' +
+                "events=" + events +
                 '}';
     }
 }
