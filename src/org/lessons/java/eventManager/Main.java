@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int choice = -1;
+        ScheduledEvents program = createEventsProgram(scanner);
         Event event = null;
 
         while (choice != 0) {
@@ -21,6 +22,7 @@ public class Main {
                 case 1:
                     // new event
                     event = createEvent(scanner);
+                    program.addEvent(event);
                     break;
                 case 2:
                     // print event
@@ -34,6 +36,28 @@ public class Main {
                     // cancel reserved seats
                     cancellation(scanner, event);
                     break;
+                case 5:
+                    // print program length
+                    System.out.println("Program length: " + program.programLength());
+                    break;
+                case 6:
+                    // filter program by date
+                    LocalDate filterDate = getDateFromUser(scanner);
+                    System.out.println(program.getEventsByPeriod(filterDate));
+                    break;
+                case 7:
+                    // print all events
+                    System.out.println(program);
+                    break;
+                case 8:
+                    // print all events sorted by date
+                    program.getEvents().sort(new EventComparatorByDate());
+                    System.out.println(program);
+                    break;
+                case 9:
+                    // delete all events
+                    program.clearProgram();
+                    break;
                 case 0:
                     break;
                 default:
@@ -45,12 +69,23 @@ public class Main {
         scanner.close();
     }
 
+    public static ScheduledEvents createEventsProgram(Scanner scanner) {
+        String title = null;
+
+        while (title == null) {
+            System.out.println("New scheduled events list");
+            title = getTitleFromUser(scanner);
+        }
+
+        return new ScheduledEvents(title);
+    }
+
     public static Event createEvent(Scanner scanner) {
         String title;
         LocalDate date;
         int totalSeats;
         Event e = null;
-        boolean isConcert = false;
+        boolean isConcert;
 
         do {
             try {
@@ -81,13 +116,13 @@ public class Main {
         String title = null;
         do {
             try {
-                System.out.print("Insert event's title: ");
+                System.out.print("Insert title: ");
                 title = scanner.nextLine();
                 if (title.isEmpty()) {
                     throw new IllegalArgumentException();
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("Event must have a title");
+                System.out.println("It must have a title");
             }
         } while (title == null || title.isEmpty());
         return title;
@@ -97,7 +132,7 @@ public class Main {
         LocalDate date = null;
         while (date == null) {
             try {
-                System.out.print("Insert event's date (YYYY-mm-dd): ");
+                System.out.print("Insert date (YYYY-mm-dd): ");
                 date = Event.validateDate(LocalDate.parse(scanner.nextLine()));
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid date format: " + e.getMessage());
@@ -192,6 +227,11 @@ public class Main {
         System.out.println("2 - Print event");
         System.out.println("3 - Reserve seats");
         System.out.println("4 - Cancel reserved seats");
+        System.out.println("5 - Show program's length");
+        System.out.println("6 - Filter program by date");
+        System.out.println("7 - Show all events");
+        System.out.println("8 - Show all events sorted by date");
+        System.out.println("9 - Delete all events");
         System.out.println("0 - Exit");
     }
 

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class Event {
+public class Event implements Comparable<Event> {
 
     // ATTRIBUTES
     private String title;
@@ -87,5 +87,14 @@ public class Event {
 
     public int getReservedSeats() {
         return this.reservedSeats;
+    }
+
+    @Override
+    public int compareTo(Event o) {
+        if (o == null) {
+            return 1;
+        } else {
+            return date.compareTo(o.getDate());
+        }
     }
 }
