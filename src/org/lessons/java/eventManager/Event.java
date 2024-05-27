@@ -44,21 +44,25 @@ public class Event {
         return true;
     }
 
-    public void cancelReservation(int seats) throws RuntimeException {
+    public boolean cancelReservation(int seats) throws RuntimeException {
         if (this.date.isBefore(LocalDate.now())) {
             throw new RuntimeException("This event has already been");
         } else if (this.reservedSeats < validateSeats(seats)) {
             throw new RuntimeException("There are not enough booked seats");
         }
         this.reservedSeats -= seats;
+        return true;
     }
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MMMM dd", Locale.ENGLISH);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.ENGLISH);
         return "Event{" +
-                "date=" + date.format(formatter) +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
+                ", date=" + date.format(formatter) +
+                ", totalSeats=" + totalSeats +
+                ", reservedSeats=" + reservedSeats +
+                ", availableSeats=" + (totalSeats - reservedSeats) +
                 '}';
     }
 
