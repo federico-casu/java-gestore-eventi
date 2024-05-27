@@ -27,7 +27,7 @@ public class Event {
         return date;
     }
 
-    public static int validateSeats(int totSeats) {
+    public static int validateSeats(int totSeats) throws IllegalArgumentException {
         if (totSeats <= 0) {
             throw new IllegalArgumentException("Invalid number of seats: " + totSeats);
         }
@@ -43,7 +43,7 @@ public class Event {
         this.reservedSeats += seats;
     }
 
-    public void cancelReservation(int seats) {
+    public void cancelReservation(int seats) throws RuntimeException {
         if (this.date.isBefore(LocalDate.now())) {
             throw new RuntimeException("This event has already been");
         } else if (this.reservedSeats < validateSeats(seats)) {
