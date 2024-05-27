@@ -1,6 +1,8 @@
 package org.lessons.java.eventManager;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
@@ -48,6 +50,7 @@ public class Main {
         LocalDate date;
         int totalSeats;
         Event e = null;
+        boolean isConcert = false;
 
         do {
             try {
@@ -56,7 +59,17 @@ public class Main {
                 date = getDateFromUser(scanner);
                 totalSeats = getTotSeatsFromUser(scanner);
 
-                e = new Event(title, date, totalSeats);
+                System.out.print("Is this event a concert? (y/n): ");
+                isConcert = scanner.nextLine().equalsIgnoreCase("y");
+                if (isConcert) {
+                    LocalTime time = getTimeFromUser(scanner, date);
+                    BigDecimal price = getPriceFromUser(scanner);
+
+                    e = new Concert(title, date, totalSeats, time, price);
+                } else {
+                    e = new Event(title, date, totalSeats);
+                }
+
             } catch (RuntimeException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -109,6 +122,37 @@ public class Main {
             }
         }
         return totSeats;
+    }
+
+    public static LocalTime getTimeFromUser(Scanner scanner, LocalDate date) {
+        LocalTime time = null;
+        while (time == null) {
+            try {
+                System.out.print("Insert event's time (HH:mm): ");
+                time = Concert.validateTime(LocalTime.parse(scanner.nextLine()), date);
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return time;
+    }
+
+    public static BigDecimal getPriceFromUser(Scanner scanner) throws IllegalArgumentException {
+        BigDecimal price = null;
+
+        while (price == null) {
+            try {
+                System.out.print("Insert event's price: ");
+                price = Concert.validatePrice(new BigDecimal(scanner.nextLine()));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid price format: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return price;
     }
 
     public static void reservation(Scanner scanner, Event event) {
