@@ -7,13 +7,38 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        int choice = -1;
+        Event event = null;
 
-        Event event = createEvent(scanner);
-        System.out.println(event);
-        reservation(scanner, event);
-        System.out.println(event);
-        cancellation(scanner, event);
-        System.out.println(event);
+        while (choice != 0) {
+            printMenu();
+            System.out.print("Select: ");
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1:
+                    // new event
+                    event = createEvent(scanner);
+                    break;
+                case 2:
+                    // print event
+                    System.out.println(event);
+                    break;
+                case 3:
+                    // reserve seats
+                    reservation(scanner, event);
+                    break;
+                case 4:
+                    // cancel reserved seats
+                    cancellation(scanner, event);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+                    break;
+            }
+        }
 
         scanner.close();
     }
@@ -112,6 +137,18 @@ public class Main {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public static void printMenu() {
+        System.out.println();
+        System.out.println("--------------------");
+        System.out.println("|       MENU       |");
+        System.out.println("--------------------");
+        System.out.println("1 - New event");
+        System.out.println("2 - Print event");
+        System.out.println("3 - Reserve seats");
+        System.out.println("4 - Cancel reserved seats");
+        System.out.println("0 - Exit");
     }
 
 }
