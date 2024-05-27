@@ -34,13 +34,14 @@ public class Event {
         return totSeats;
     }
 
-    public void reserveSeat(int seats) throws RuntimeException {
+    public boolean reserveSeat(int seats) throws RuntimeException {
         if (this.date.isBefore(LocalDate.now())) {
             throw new RuntimeException("This event has already been");
         } else if ((this.totalSeats - this.reservedSeats) < validateSeats(seats)) {
             throw new RuntimeException("There are not enough seats");
         }
         this.reservedSeats += seats;
+        return true;
     }
 
     public void cancelReservation(int seats) throws RuntimeException {

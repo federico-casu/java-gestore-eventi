@@ -10,6 +10,7 @@ public class Main {
 
         Event event = createEvent(scanner);
         System.out.println(event);
+        reservation(scanner, event);
 
         scanner.close();
     }
@@ -80,6 +81,20 @@ public class Main {
             }
         }
         return totSeats;
+    }
+
+    public static void reservation(Scanner scanner, Event event) {
+        boolean reserved = false;
+        while (!reserved){
+            try {
+                System.out.print("How many seats do you want to reserve? ");
+                reserved = event.reserveSeat(Event.validateSeats(Integer.parseInt(scanner.nextLine())));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input");
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
 }
